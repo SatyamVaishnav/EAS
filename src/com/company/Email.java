@@ -1,11 +1,13 @@
-package com.company;
-import java.util.*;
+package emailapp;
+import java.util.Scanner;
+import java.util.Random;
 import java.io.*;
-
 public class Email {
-    public Scanner SC = new Scanner(System.in);
 
-    // setting variables as private to not give access direcly
+    public Scanner s = new Scanner(System.in);
+
+    // Setting up the variables
+    // Defined as 'private' so that these cannot be accessed directly
     private String fname;
     private String lname;
     private String dept;
@@ -14,32 +16,36 @@ public class Email {
     private int mailCapacity = 500;
     private String alter_email;
 
-    // constructor to receive firstname and lastname
+    // Constructor to receive the first name and the last name
     public Email(String fname, String lname) {
         this.fname = fname;
         this.lname = lname;
-        System.out.println("New Employee: " + this.fname + "" + this.lname);
+        System.out.println("NEW EMPLOYEE: " + this.fname + " " + this.lname);
 
-        // calling methods
+        // Call a method asking for the department - return the department
         this.dept = this.setDept();
-        this.password = this.generatePass(20);
-        this.email = this.generateEmail();
 
+        // Call a method that returns a random password
+        this.password = this.generate_password(8);
+
+        // Combine elements to generate an email
+        this.email = this.generate_email();
     }
 
-    //generate main method
-    private String generateEmail() {
-        return this.fname.toLowerCase() + "." + this.lname.toLowerCase() + "@" + this.dept.toLowerCase() + ".company.com";
-
+    // Generating the email according to the given syntax
+    private String generate_email() {
+        return this.fname.toLowerCase() + "." + this.lname.toLowerCase() + "@" + this.dept.toLowerCase()
+                + ".company.com";
     }
 
-    //Asking for department
+    // Ask for the department
     private String setDept() {
-        System.out.println("Department Code \n1 for Sales \n2 for development \n3 for accounting department \n none");
+        System.out.println(
+                "DEPARTMENT CODES\n1 for Sales\n2 for Development\n3 for Accounting\n0 for None");
         boolean flag = false;
         do {
-            System.out.println("Enter Department Code");
-            int choice = SC.nextInt();
+            System.out.print("Enter Department Code: ");
+            int choice = s.nextInt();
             switch (choice) {
                 case 1:
                     return "Sales";
@@ -50,114 +56,108 @@ public class Email {
                 case 0:
                     return "None";
                 default:
-                    System.out.println("invalid choice");
-
+                    System.out.println("**INVALID CHOICE**");
             }
         } while (!flag);
         return null;
     }
 
-    // generate random pass method
-    private String generatePass(int length) {
+    // Generating a random password
+    private String generate_password(int length) {
         Random r = new Random();
-        String CaptialLetter = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String SmallLetter = "abcdefghijklmnopqrstuvwxyz";
-        String Number = "0123456789";
-        String Symbols = "!@£$%^&*?";
-        String Value = CaptialLetter + SmallLetter + Number + Symbols;
-        String Password = "";
+
+        String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String Small_chars = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String symbols = "!@#$%&?";
+        String values = Capital_chars + Small_chars + numbers + symbols;
+
+        String password = "";
         for (int i = 0; i < length; i++) {
-            Password = Password + Value.charAt(r.nextInt(Value.length()));
+            password = password + values.charAt(r.nextInt(values.length()));
         }
         return password;
     }
 
-    // Change password method
-    public void SetPassword() {
+    // Change the password
+    public void set_password() {
         boolean flag = false;
         do {
-            System.out.println("Do you want to change your password!(Y/N)");
-            char choice = SC.next().charAt(0);
-            if (choice == 'Y' || choice == 'y')
+            System.out.print("ARE YOU SURE YOU WANT TO CHANGE YOUR PASSWORD? (Y/N) : ");
+            char choice = s.next().charAt(0);
+            if (choice == 'Y' || choice == 'y') {
                 flag = true;
-            System.out.println("Enter Current Password");
-            String temp = SC.next();
-            if (temp.equals(this.password)) {
-                System.out.println("Enter new Password");
-                this.password = SC.next();
-                System.out.println("Password Changed Succcesfully");
-
-            } else {
-                System.out.println("incorrect Password");
-            }
-
-            if (choice == 'N' || choice == 'n') {
+                System.out.print("Enter current password: ");
+                String temp = s.next();
+                if (temp.equals(this.password)) {
+                    System.out.println("Enter new password: ");
+                    this.password = s.next();
+                    System.out.println("PASSWORD CHANGED SUCCESSFULLY!");
+                } else {
+                    System.out.println("Incorrect Password!");
+                }
+            } else if (choice == 'N' || choice == 'n') {
                 flag = true;
-                System.out.println("Password changed option cancelled");
+                System.out.println("PASSWORD CHANGE CANCELED!");
             } else {
-                System.out.println("Enter Valid Choice");
+                System.out.println("**ENTER A VALID CHOICE**");
             }
-
         } while (!flag);
     }
 
-    // set mailbox capacity method
-    public void SetMailCap() {
-        System.out.println("Current Capacity = " + this.mailCapacity + "mb");
-        System.out.println("Enter new mailbox capacity: ");
-        this.mailCapacity = SC.nextInt();
-        System.out.println("Mailbox capacity is successfully changed");
+    // Set the mailbox capacity
+    public void set_mailCap() {
+        System.out.println("Current capacity = " + this.mailCapacity + "mb");
+        System.out.print("Enter new capacity: ");
+        this.mailCapacity = s.nextInt();
+        System.out.println("MAILBOX CAPACITY CHANGED SUCCESSFULLY!");
+
     }
 
-    // set AlternateEmail
-    public void AlternateEmail() {
-        System.out.println("Enter alternate mail");
-        this.alter_email = SC.next();
-        System.out.println("Alternate email is set");
+    // Set the alternate email
+    public void alternate_email() {
+        System.out.print("Enter new alternate email: ");
+        this.alter_email = s.next();
+        System.out.println("ALTERNATE EMAIL SET SUCCESSFULLY!");
     }
 
-    // Display user information method
-    public void GetInfo() {
-        System.out.println("New: " + this.fname + " " + this.lname);
-        System.out.println("Department: " + this.dept);
-        System.out.println("Email: " + this.email);
-        System.out.println("Password: " + this.password);
-        System.out.println("number Capacity: " + this.mailCapacity);
-        System.out.println("Alternate Mail: " + this.alter_email);
+    // Displaying the employee's information
+    public void getInfo() {
+        System.out.println("NAME: " + this.fname + " " + this.lname);
+        System.out.println("DEPARTMENT: " + this.dept);
+        System.out.println("EMAIL: " + this.email);
+        System.out.println("PASSWORD: " + this.password);
+        System.out.println("MAILBOX CAPACITY: " + this.mailCapacity + "mb");
+        System.out.println("ALTER EMAIL: " + this.alter_email);
     }
 
-    public void StoreFIle() {
+    public void storefile() {
         try {
-            FileWriter in = new FileWriter("/Users/satyamvaishnav/Documents/File");
-            in.write("First Name: " + this.fname);
-            in.append("\nLast Name: " + this.lname);
-            in.append("\nPassword: " + this.password);
-            in.append("\n Capacity: " + this.mailCapacity);
-            in.append("\nAlternate Mail: " + this.alter_email);
+            FileWriter in = new FileWriter("C:\\Users\\Dell\\Desktop\\Info.txt");
+            in.write("First Name: "+this.fname);
+            in.append("Last Name: "+this.lname);
+            in.append("Email: "+this.email);
+            in.append("Password: "+this.password);
+            in.append("Capacity: "+this.mailCapacity);
+            in.append("Alternate mail: "+this.alter_email);
             in.close();
-            System.out.println("Data Stored");
-
-        } catch (Exception e) {
-            System.out.println((e));
-        }
+            System.out.println("Stored..");
+        }catch (Exception e){System.out.println(e);}
     }
 
-    public void ReadFile() {
+    public void read_file() {
         try {
-            FileReader F1 = new FileReader("/Users/satyamvaishnav/Documents/File");
+            FileReader f1 = new
+                    FileReader("C:\\Users\\Dell\\Desktop\\Info.txt");
             int i;
-            while ((i = F1.read()) != -1) {
+            while ((i = f1.read()) != -1) {
                 System.out.print((char) i);
-
             }
-
-            F1.close();
-
+            f1.close();
         } catch (Exception e) {
-            System.out.println((e));
-
+            System.out.println(e);
         }
+        System.out.println();
+
     }
 }
-
-
