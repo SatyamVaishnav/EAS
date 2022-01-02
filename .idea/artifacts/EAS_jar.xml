@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="EAS:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/EAS_jar</output-path>
+    <root id="archive" name="EAS.jar">
+      <element id="module-output" name="EAS" />
+    </root>
+  </artifact>
+</component>
